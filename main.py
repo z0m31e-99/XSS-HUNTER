@@ -266,10 +266,15 @@ class SkullSmoker:
         }
         print(f"{colors.get(status, Fore.WHITE)}{prefixes.get(status, '[*]')} {message}{Style.RESET_ALL}")
 
-    def _animate_text(self, text, color=Fore.GREEN, delay=0.03):
-        """Animate text output"""
+    def _animate_text(self, text, color=Fore.GREEN, delay=0.02, glitch=False):
+        """Animate text output with optional glitch effect"""
+        import random
+        charset = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+-=[]{}|;:,.<>?'
         for char in text:
-            sys.stdout.write(f"{color}{char}{Style.RESET_ALL}")
+            if glitch and char != '\n' and random.random() < 0.18:
+                sys.stdout.write(f"{Fore.MAGENTA}{random.choice(charset)}{Style.RESET_ALL}")
+            else:
+                sys.stdout.write(f"{color}{char}{Style.RESET_ALL}")
             sys.stdout.flush()
             time.sleep(delay)
         print()
@@ -1145,12 +1150,13 @@ if __name__ == "__main__":
     parser.add_argument("-d", "--depth", help="Crawl depth (default: 2)", type=int, default=2)
     
     args = parser.parse_args()
-    
     scanner = SkullSmoker(
         domain=args.domain,
         output_file=args.output,
         headless=args.headless,
         depth=args.depth
     )
-    
+    # Use glitch effect for banner
+    scanner._animate_text(BANNER, Fore.RED, delay=0.002, glitch=True)
+    scanner._animate_text(f"Starting SKULL SMOKER against {scanner.domain}", Fore.RED)
     scanner.run()
