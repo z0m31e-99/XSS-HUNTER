@@ -1,18 +1,32 @@
-step 1. git clone https://github.com/z0m31e-99/XSS-HUNTER
+1. Clone the Repository
 
-step 2. pip install -r requirements.txt
+git clone https://github.com/z0m31e-99/XSS-HUNTER
+cd XSS-HUNTER
 
-step 3. python main.py example.com
+2. Create and Activate a Virtual Environment (Recommended)
 
-Optional arguments:
+On Linux/macOS:
+python3 -m venv venv
+source venv/bin/activate
 
--o <outputfile>: Specify output HTML report filename (default: skull_report.html)
+On Windows:
+python -m venv venv
+venv\Scripts\activate
 
---headless: Run browser in headless mode (no GUI)
+3. Install Dependencies
+pip install -r requirements.txt
 
--d <depth>: Set crawl depth (default: 2)
+4. Run the Tool
+python main.py example.com
 
-Example with options:
+Option
+Description
+-o <outputfile>
+Specify the output HTML report filename (default: skull_report.html)
+--headless
+Run browser in headless mode (without GUI)
+-d <depth>
+Set crawl depth (default: 2)
 
-
+🔍 Example with Options:
 python main.py example.com -o report.html --headless -d 3
